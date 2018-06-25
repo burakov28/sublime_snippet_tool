@@ -23,7 +23,7 @@ def checkPathToSublime(path):
 def initConfig():
   resetTextColor()
 
-  config = json.dumps({}, indent = CONFIG_FILE_INDENT, sort_keys = True)
+  config = {}
   while (True):
     if (PATH_TO_SUBLIME not in config):
       printGreen("Specify path to sublime text editor")
