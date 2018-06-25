@@ -8,6 +8,8 @@ CONFIG_FILE_INDENT = 2
 
 # config keys
 PATH_TO_SUBLIME = "path_to_sublime"
+ZIP_COMMAND = "zip_command"
+UNZIP_COMMAND = "unzip_command"
 
 def checkPathToSublime(path):
   if (not fs.exists(path)):
@@ -32,6 +34,8 @@ def initConfig():
         continue
       
       config[PATH_TO_SUBLIME] = fs.abspath(path)
+      config[ZIP_COMMAND] = ["zip", "-r", "-m"]
+      config[UNZIP_COMMAND] = ["unzip", "-d"]
       dumpConfig(config)
       break
     break

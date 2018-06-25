@@ -4,7 +4,7 @@ import os.path as fs
 import sys
 import shutil
 
-from config_parser import (PATH_TO_SUBLIME)
+from config_parser import (PATH_TO_SUBLIME, ZIP_COMMAND, UNZIP_COMMAND)
 
 def getFileNamesInDir(path):
   files = list(map(lambda s: fs.splitext(s)[0], filter(lambda s: fs.isfile(path + "/" + s), os.listdir(path))))
@@ -19,7 +19,7 @@ def unpackPackage(lang, config):
 
   pathTo += "/" + lang + ".zip"
   shutil.copyfile(pathFrom, pathTo)
-  command = ["unzip", fs.abspath(pathTo), "-d", fs.abspath("temp")]
+  command = config[UNZIP_COMMAND] + [fs.abspath("temp"), fs.abspath(pathTo)]
   FNULL = open(os.devnull, "w")
   retCode = subprocess.call(command, stdout = FNULL, stderr = subprocess.STDOUT)
   FNULL.close()
@@ -28,7 +28,7 @@ def unpackPackage(lang, config):
 def packPackage(lang, config):
   os.remove("temp/" + lang + ".zip")
   FNULL = open(os.devnull, "w")
-  command = ["zip", "-r", "-m", lang + "Temp.zip"] + list(map(lambda s: fs.basename(s), os.listdir("temp")))
+  command = config[ZIP_COMMAND] + [lang + "Temp.zip"] + list(map(lambda s: fs.basename(s), os.listdir("temp")))
   retCode = subprocess.call(command, stdout = FNULL, stderr = subprocess.STDOUT, cwd = "temp")
   pathFrom = "temp/" + lang + "Temp.zip"
   pathTo = config[PATH_TO_SUBLIME] + "/Packages/" + lang + ".sublime-package"
